@@ -3,14 +3,18 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import analytics
+import json
 
 # [필독] 1. 가장 먼저 실행되어야 하는 설정
 st.set_page_config(page_title="세나 리버스 관리자 센터", layout="wide")
 
 # 2. 구글 시트 및 API 설정
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds_file = "skrb-db-e7d51b9f990a.json" 
-creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
+# creds_file = "skrb-db-e7d51b9f990a.json" 
+# creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
+creds_info = st.secrets["gcp_service_account"]
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_info, scope)
+
 client = gspread.authorize(creds)
 sheet = client.open("세나리버스_데이터").sheet1
 
